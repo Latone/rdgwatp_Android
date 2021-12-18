@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:ConsoleApp1.src.items;assembly=rdgwatp_Android"
+             x:Class="rdgwatp_Android.InventoryPage"
+             x:Name="InvPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.BindingContext>
+        <viewModel:ItemType/>
+    </ContentPage.BindingContext>
+    <StackLayout BackgroundColor="#4d4e7a">
+        <Button Text="Закрыть инвентарь" FontSize="15" BackgroundColor="#6d6e9a" Clicked="BacktoGameButton_Clicked" VerticalOptions="Start" HorizontalOptions="End" WidthRequest="700" Margin="5"/>
+        <CollectionView ItemsSource= "{Binding Items}"
+                        x:Name="collectionINV"
+                            ItemsLayout="VerticalGrid, 2"
+                            SelectionMode="Single"
+                            SelectionChanged="OnSelectionChanged">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="8" ColumnSpacing="10" RowSpacing="4" BackgroundColor="#6d6e9a" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="20"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="45" />
+                            <ColumnDefinition Width="140" />
+                        </Grid.ColumnDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal" />
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#4d4e7a" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <BoxView Color="#cccccc" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="1"/>
+                        <BoxView Color="#cccccc" Grid.Column="1" Grid.RowSpan="2"/>
+                        <BoxView Color="#cccccc" Grid.Column="2" Grid.RowSpan="2"/>
+                        <Label Grid.RowSpan="2"
+                               Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{Binding icon}"
+                                   FontSize="35"
+                               HorizontalOptions="Center"/>
+                        <Label Grid.Column="1"
+                                   Text="{Binding name}"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation" 
+                                   HorizontalOptions="Center"/>
+
+                        <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding subType}"
+                                   LineBreakMode="TailTruncation"
+                                   FontAttributes="Italic"
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Center"/>
+                        <Label Grid.Row="0"
+                                   Grid.Column="2"
+                               Grid.RowSpan="2"
+                                   Text="{Binding points}"
+                                   LineBreakMode="TailTruncation"
+                                   FontAttributes="Italic"
+                                    FontSize="30"
+                                   VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+                    </Grid>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

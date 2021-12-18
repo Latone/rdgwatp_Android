@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="rdgwatp_Android.MapPage"
+             NavigationPage.HasNavigationBar="False"
+             >
+    <ContentPage.Content>
+        <Grid 
+                 HorizontalOptions="FillAndExpand"
+              VerticalOptions="FillAndExpand"
+               RowSpacing="0"
+               ColumnSpacing="0"
+               Margin="10"
+            RowDefinitions = "20,160,110,50,80" 
+            ColumnDefinitions = "160,160,20,80,80,80,20">
+
+            <Label Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan ="3" Text="Press the button" VerticalOptions="Start"/>
+
+            <Button Grid.Row="3" Grid.Column ="1"  Grid.RowSpan ="1" Text="Start" Clicked="StartButton_Clicked" VerticalOptions="Start"/>
+
+            <Button Grid.Row="3" Grid.Column ="0"  Text="⌫QUIT" Clicked="MainMenuButton_Clicked" VerticalOptions="Start"/>
+
+            <Button Grid.Row="2" Grid.Column ="5"  IsVisible="{Binding InventoryVis}" Grid.RowSpan ="1" x:Name="PopUpInventory" Text="ℑℕⓋℰℕȾ𝕺Ⓡ𝚈" Clicked="InventoryButton_Clicked" VerticalOptions="Start"/>
+            <Button Grid.Row="2" Grid.Column ="4" Text="↑" IsVisible="{Binding UpVis}" Clicked="UPButton_Clicked" VerticalOptions="End" FontSize="25"/>
+            <Button Grid.Row="3" Grid.Column ="4" Text="↓" IsVisible="{Binding DownVis}" Clicked="DOWNButton_Clicked" VerticalOptions="Center" FontSize="25"/>
+            <Button Grid.Row="3" Grid.Column ="3" Text="←" IsVisible="{Binding LeftVis}" Clicked="LEFTButton_Clicked" VerticalOptions="Center" FontSize="25"/>
+            <Button Grid.Row="3" Grid.Column ="5" Text="→" IsVisible="{Binding RightVis}" Clicked="RIGHTButton_Clicked" VerticalOptions="Center" FontSize="25"/>
+            
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.RowSpan ="3"
+                   Grid.ColumnSpan ="3"
+                   Text="{Binding MapView}"
+                   CharacterSpacing="10"
+                   HorizontalOptions="Start"
+                   FontFamily="serif"
+                   VerticalOptions="Center"
+                   FontSize="35"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
