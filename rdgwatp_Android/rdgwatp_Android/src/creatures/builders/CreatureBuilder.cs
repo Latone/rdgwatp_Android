@@ -114,7 +114,8 @@ namespace ConsoleApp1.src.creatures.builders
         public void setIsFighting(bool fighting)
         {
             this.fighting = fighting;
-            NotifyPropertyChanged("fighting");
+            if(fighting)
+                NotifyPropertyChanged("fighting");
         }
         public void setZeroTriggerFighting(bool Tfighting)
         {
@@ -160,6 +161,16 @@ namespace ConsoleApp1.src.creatures.builders
         public short getHP()
         {
             return HP;
+        }
+        public void setIsDead(bool dead)
+        {
+            isDead = dead;
+            if (HP < 1)
+                NotifyPropertyChanged("got less than 1 hp");
+        }
+        public bool getIsDead()
+        {
+            return isDead;
         }
         public short getMaxHP()
         {
@@ -289,6 +300,7 @@ namespace ConsoleApp1.src.creatures.builders
         private short DefaultDMG;
         private byte Ch_Crit_Attack;
         private short Power_Crit_Attack;
+        private bool isDead = false;
         //Местность, позиция
         private short x, y;
         private short lastx, lasty;

@@ -11,7 +11,7 @@
                ColumnSpacing="0"
                Margin="10"
             RowDefinitions = "1*,60,60,60,60" 
-            ColumnDefinitions = "160,160,20,80,80">
+            ColumnDefinitions = "120,160,20,80,80">
 
             <Label Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan ="3" Text="Active Effects" VerticalOptions="Start"/>
                
@@ -26,12 +26,47 @@
                    Grid.Column ="0"
                    Grid.ColumnSpan="3"
                    Text="{Binding EmotionsView}"
-                   FontSize="4"
-                   MaxLines="50" LineBreakMode="TailTruncation"
-                   CharacterSpacing="10"
+                   FontSize="9"
+                   MaxLines="80" LineBreakMode="TailTruncation"
+                   LineHeight="0.85"
+                   CharacterSpacing="0"
                    HorizontalOptions="Start"
-                   FontFamily="serif"
+                   FontFamily="monospace"
                    VerticalOptions="Center"/>
+            <Label Grid.Row="0"
+                   Text="Enemy HP"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="1"
+                   HorizontalTextAlignment="Start"
+                   />
+            <Label Grid.Row="0"
+                   Text="{Binding en_Vnumhp}"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="1"
+                   HorizontalTextAlignment="End"
+                   />
+            <ProgressBar Grid.Row="0"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="1"
+                         Progress="{Binding en_pbar}"
+                         ScaleY="3"/>
+            
+            <Label Grid.Row="0"
+                         Grid.Column="5"
+                         Grid.ColumnSpan="1"
+                   Text="Hero HP"
+                   HorizontalTextAlignment="End"/>
+            <Label Grid.Row="0"
+                         Grid.Column="5"
+                         Grid.ColumnSpan="1"
+                   Text="{Binding h_Vnumhp}"
+                   HorizontalTextAlignment="Start"/>
+            <ProgressBar Grid.Row="0"
+                         Grid.Column="5"
+                         Grid.ColumnSpan="1"
+                         Progress="{Binding h_pbar}"
+                         ProgressColor="LawnGreen"
+                         ScaleY="3"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+[assembly: ExportFont("customF.ttf", Alias = "custF")]
 namespace rdgwatp_Android
 {
     public partial class App : Application

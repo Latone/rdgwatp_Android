@@ -51,8 +51,13 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
             Thread.Sleep(500);
 
             //Если враг откинулся
-            if (cb.getHP() < 1)
+            if (cb.getHP() < 1 && cb.getIsDead() == false)
+            {
+                cbP.setIsFighting(false);
+                cbP.setZeroTriggerFighting(false);
+                cb.setIsDead(true);
                 return;
+            }
             //Очередь врага
             EnemyRaisedABiggerOne(ref cb, ref cbP);
         }
@@ -100,7 +105,9 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
             //Console.SetCursorPosition(0, 1);
             temp = cb.getEmotions(3,true)[3];
             Thread.Sleep(1100);
-
+            temp = cb.getEmotions(0, true)[0];
+            Thread.Sleep(400);
+            temp = cb.getEmotions(0, true)[0];
         }
     }
 }

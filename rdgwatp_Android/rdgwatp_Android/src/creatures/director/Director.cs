@@ -59,7 +59,7 @@ namespace ConsoleApp1.src.creatures.director
             cb.setVanishRange(5);
             cb.setChasePath(null);
             cb.setInventory(CreateBasicInventory.getBasicInventory(2)); //Значение в методе getBasicInvetory означает сокращение максимума предметов на ..
-            cb.setEmotions(new String[] {         "╔═══════════════════════════════════════════╗\n"+
+            cb.setEmotions(new String[] {         "╔══════════════════════╗\n"+
                                                   "║                  ,-'\"\"'-.                 ║\n"+
                                                   "║                 ;        :                ║\n"+
                                                   "║                :          :               ║\n"+
@@ -73,7 +73,7 @@ namespace ConsoleApp1.src.creatures.director
                                                   "║                  SKELETON                 ║\n"+
                                                   "║                                           ║\n"+
                                                   "║                                           ║\n"+
-                                                  "╚═══════════════════════════════════════════╝",
+                                                  "╚══════════════════════╝",
                                                   "╔═══════════════════════════════════════════╗\n"+
                                                   "║                                           ║\n"+
                                                   "║                  ,-'\"\"'-.                 ║\n"+

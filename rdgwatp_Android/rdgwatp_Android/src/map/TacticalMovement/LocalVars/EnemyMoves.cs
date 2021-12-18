@@ -117,7 +117,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                 if (cbP.getZeroTriggerFighting() == false)
                     cbP.setZeroTriggerFighting(true);
 
-                Thread th = new Thread(x => fight.Start(cb, cbP));
+                Thread th = new Thread(x => fight.Start(cb, ref cbP));
                 th.Start();
 
                 return;
@@ -180,7 +180,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                 if (cbP.getZeroTriggerFighting() == false)
                     cbP.setZeroTriggerFighting(true);
 
-                Thread th = new Thread(x => fight.Start(cb, cbP));
+                Thread th = new Thread(x => fight.Start(cb, ref cbP));
                 th.Start();
             }    
         }
