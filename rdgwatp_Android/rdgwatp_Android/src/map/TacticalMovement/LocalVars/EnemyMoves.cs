@@ -12,6 +12,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
 {
     public static class EnemyMoves
     {
+        public static List<Thread> threads = new List<Thread>();
         //Move - рандомное хождение по карте
         public static void Move(CreatureBuilder cb, CreatureBuilder cbP,short PlayerXcoor, short PlayerYcoor)
         {
@@ -50,7 +51,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                         cb.setY((byte)(cb.getY() - 1));
                     break;
                 case 2://DOWN
-                    if (cb.getY() + 1 < CreatedMap.Mheight && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX(), cb.getY() + 1]))
+                    if (cb.getY() + 1 < CreatedMap.testMap.GetLength(1) && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX(), cb.getY() + 1]))
                         cb.setY((byte)(cb.getY() + 1));
                     break;
                 case 3://LEFT
@@ -58,7 +59,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                         cb.setX((byte)(cb.getX() - 1));
                     break;
                 case 4://RIGHT
-                    if (cb.getX() + 1 < CreatedMap.Mwidth && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX() + 1, cb.getY()]))
+                    if (cb.getX() + 1 < CreatedMap.testMap.GetLength(0) && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX() + 1, cb.getY()]))
                         cb.setX((byte)(cb.getX() + 1));
                     break;
                 default://DO_NOTHING
@@ -118,6 +119,8 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                     cbP.setZeroTriggerFighting(true);
 
                 Thread th = new Thread(x => fight.Start(cb, ref cbP));
+                th.IsBackground = true;
+                threads.Add(th);
                 th.Start();
 
                 return;
@@ -126,8 +129,8 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             if (cb.getType() == creatures.types.Type.ENT_GHOST)
                 return;
             //Из метода Graph.getShortestDistance() возвращается кратчайший путь до игрока на графе
-            LinkedList<short> NewEntryPath = Graph.getShortestDistance(cb.getX() * CreatedMap.Mwidth + cb.getY(),
-                                          PlayerXcoor * CreatedMap.Mwidth + PlayerYcoor);
+            LinkedList<short> NewEntryPath = Graph.getShortestDistance(cb.getX() * CreatedMap.testMap.GetLength(0) + cb.getY(),
+                                          PlayerXcoor * CreatedMap.testMap.GetLength(0) + PlayerYcoor);
             //Помещается путь, по которому шагает враг до игрока
             cb.setChasePath(NewEntryPath);
             // Удаляется последняя, т.к.На последнем месте вершина, на которой распологается сам враг
@@ -135,7 +138,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
 
             //WayToGo (вычисляется следующее направление, сделано для отображения на "карте")
             short NextStep = cb.getChasePath().ElementAt(cb.getChasePath().Count-1);
-            short CreaturePosition = (short)(cb.getX() * CreatedMap.Mwidth + cb.getY());
+            short CreaturePosition = (short)(cb.getX() * CreatedMap.testMap.GetLength(0) + cb.getY());
             short diff = (short) (NextStep - CreaturePosition);
 
             cb.RememberLastCoordinates();
@@ -156,7 +159,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                 {
                     cb.setY((byte)(cb.getY() + 1));
                 }
-                else if (diff == -CreatedMap.Mheight) //LEFT
+                else if (diff == -CreatedMap.testMap.GetLength(1)) //LEFT
                 {
                     cb.setX((byte)(cb.getX() - 1));
                 }
@@ -181,6 +184,8 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                     cbP.setZeroTriggerFighting(true);
 
                 Thread th = new Thread(x => fight.Start(cb, ref cbP));
+                th.IsBackground = true;
+                threads.Add(th);
                 th.Start();
             }    
         }

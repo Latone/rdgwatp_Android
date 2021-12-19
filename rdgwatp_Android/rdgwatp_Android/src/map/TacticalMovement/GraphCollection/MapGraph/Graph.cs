@@ -13,7 +13,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.MinPath
         //Сам граф adj
         public static List<List<int>> adj;
         //Его "Площадь"
-        public static int v = CreatedMap.Mwidth * CreatedMap.Mheight;
+        public static int v = CreatedMap.testMap.GetLength(0) * CreatedMap.testMap.GetLength(1);
         //Сам BFS
         private static bool BFS(int src,
                                  int dest, int v, int[] pred, int[] dist) //сам BFS <*DFS, сорян там другая логика требуется, но ты тоже special*>
@@ -95,23 +95,23 @@ namespace ConsoleApp1.src.map.TacticalMovement.MinPath
                 adj.Add(new List<int>());
             }
             //Добавление мостов
-            for (int j = 0; j < CreatedMap.Mheight; j++)
+            for (int j = 0; j < CreatedMap.testMap.GetLength(1); j++)
             {
-                for (int i = 0; i < CreatedMap.Mwidth; i++)
+                for (int i = 0; i < CreatedMap.testMap.GetLength(0); i++)
                 {
                     if (VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i, j]))
                         continue;
-                    if (j + 1 < CreatedMap.Mwidth && !VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i, j + 1]))
-                        addEdge(i * CreatedMap.Mheight + j, i * CreatedMap.Mheight + j + 1);
+                    if (j + 1 < CreatedMap.testMap.GetLength(0) && !VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i, j + 1]))
+                        addEdge(i * CreatedMap.testMap.GetLength(1) + j, i * CreatedMap.testMap.GetLength(1) + j + 1);
 
                     if(j-1>=0 && !VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i, j - 1]))
-                        addEdge(i * CreatedMap.Mheight + j, i * CreatedMap.Mheight + j - 1);
+                        addEdge(i * CreatedMap.testMap.GetLength(1) + j, i * CreatedMap.testMap.GetLength(1) + j - 1);
 
-                    if(i+1 < CreatedMap.Mheight && !VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i + 1, j]))
-                        addEdge(i * CreatedMap.Mheight + j, (i+1) * CreatedMap.Mheight +j);
+                    if(i+1 < CreatedMap.testMap.GetLength(1) && !VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i + 1, j]))
+                        addEdge(i * CreatedMap.testMap.GetLength(1) + j, (i+1) * CreatedMap.testMap.GetLength(1) +j);
 
                     if (i - 1 >=0 && !VisualCharacters.WallPattern.Contains(CreatedMap.testMap[i - 1, j]))
-                        addEdge(i * CreatedMap.Mheight + j, (i-1) * CreatedMap.Mheight + j);
+                        addEdge(i * CreatedMap.testMap.GetLength(1) + j, (i-1) * CreatedMap.testMap.GetLength(1) + j);
                 }
             }
         }

@@ -11,8 +11,8 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
         public static List<string> inventoryview = new List<string>();
         public static List<string> itemDescriptionview = new List<string>();
 
-        public static char[] WallPattern = new char[] {'*'};
-        public static char[] FloorPattern = new char[] { (char)9632 }; //Изменится с рандомизацией мапы
+        public static char[] WallPattern = new char[] { '■' };
+        public static char[] FloorPattern = new char[] { '□' }; //Изменится с рандомизацией мапы
         public static char[,] EmptyInventoryCase = new char[,] { {' ', '෴', ' ' }, 
                                                                  { '┫', ' ', '┣' }, 
                                                                  { ' ', 'ᚚ', ' ' }, };

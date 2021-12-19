@@ -11,7 +11,7 @@ namespace ConsoleApp1.src.items
         {
             List<ItemType> Inventory = new List<ItemType>();
             Random rnd = new Random();
-            int k = rnd.Next(3, 7); //Кол-во предметов на создание (каждого из существ)
+            int k = rnd.Next(1, 4); //Кол-во предметов на создание (каждого из существ)
             for (int i = 0; i < k; i++)
             {
                 Random rnd2 = new Random();

@@ -158,11 +158,15 @@ namespace rdgwatp_Android
                                   //th.Abort();
         }
         //Выход в меню, сброс игры
-        private async void MainMenuButton_Clicked(object sender, EventArgs e)
+        private void MainMenuButton_Clicked(object sender, EventArgs e)
         {
-            map.Clear();
-            InventoryVis = false;
-            await Navigation.PopAsync();
+                map.Clear();
+                InventoryVis = false;
+            Device.BeginInvokeOnMainThread(() => {
+                //foreach (var thread in EnemyMoves.threads)
+                //    thread.Join();
+                Navigation.PopAsync();
+            });
         }
         //Заход в бой (ивент переключения параметра isFighting)
         async void OnCBPropertyChanged(object sender, PropertyChangedEventArgs e)

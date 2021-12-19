@@ -78,6 +78,7 @@ namespace rdgwatp_Android
                         break;
                     case SubType.HP:
                         cb.setHP((short)(cb.getHP() + selectedItem.points));
+                        if (cb.getHP() > cb.getMaxHP()) cb.setHP(cb.getMaxHP());
                         break;
                     //IncreaseStats - в конечном итоге повышает мощь критического удара
                     case SubType.IncreaseStats:

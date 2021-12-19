@@ -36,7 +36,7 @@
                    HorizontalOptions="Start"
                    FontFamily="serif"
                    VerticalOptions="Center"
-                   FontSize="35"/>
+                   FontSize="10"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

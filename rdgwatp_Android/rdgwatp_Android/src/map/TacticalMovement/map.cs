@@ -9,6 +9,9 @@ using ConsoleApp1.src.items;
 using ConsoleApp1.src.map.TacticalMovement.LocalVars;
 using ConsoleApp1.src.map.TacticalMovement.Strategies;
 using rdgwatp_Android;
+using rdgwatp_Android.src.map.MapGenerator;
+using System.Threading.Tasks;
+
 namespace ConsoleApp1.src.map
 {
 
@@ -30,42 +33,47 @@ namespace ConsoleApp1.src.map
         }
         public static void StartMap()
         {
-            const byte PcoorX = 1, //Тестовые координаты для игрока
-                       PcoorY = 1;
+            Drunkard.Initialize(); // Создаём рандомную мапу
+            short PcoorX = (short)Drunkard.RstartPointX, //Тестовые координаты для игрока
+                 PcoorY = (short)Drunkard.RstartPointY;
 
             // CreatedMap.fillMap();
             CreatedMap.CreateGraph(); // Создание графа для карты, по нему перемещаются существа
-            //Создание оболочек для существ
-            CreatureBuilder cbP = new CreatureBuilder();
-            CreatureBuilder cbS = new CreatureBuilder();
-            CreatureBuilder cbL = new CreatureBuilder();
-            CreatureBuilder cbK = new CreatureBuilder();
-            CreatureBuilder cbG = new CreatureBuilder();
-            Director director = new Director();
-
-            //Заполнение оболочек для существ
-            director.constructPlayer(cbP, PcoorX, PcoorY);
-            director.constructSkeleton(cbS, PcoorX + 5, PcoorY + 5);
-            director.constructSlime(cbL, PcoorX + 5, PcoorY + 5);
-            //director.constructDoorKnob(cbK, PcoorX+5, PcoorY+5);
-            director.constructGhost(cbG, PcoorX + 5, PcoorY + 4);
-
             //Список существ
             Lcb = new List<CreatureBuilder>();
+            //Создание отдельной оболочки для игрока
+            CreatureBuilder cbP = new CreatureBuilder();
+            Director director = new Director();
+
+            //Заполнение оболочки игрока
+            director.constructPlayer(cbP, PcoorX, PcoorY);
             Lcb.Add(cbP);
-            Lcb.Add(cbS);
-            Lcb.Add(cbL);
-            Lcb.Add(cbK);
-            Lcb.Add(cbG);
+            //Создание/Заполнение оболочек для существ
+            while (Drunkard.Enemy_Cords.Count > 0)
+            {
+                Drunkard.coords en_c = Drunkard.Enemy_Cords.Pop();
+                CreatureBuilder cbNEW = new CreatureBuilder();
+                switch (Randomizator.GenerateRandomNumber(4))
+                {
+                    case 0:
+                        director.constructSkeleton(cbNEW, en_c.x, en_c.y);
+                        break;
+                    case 1:
+                        director.constructSlime(cbNEW, en_c.x, en_c.y);
+                        break;
+                    case 2:
+                        director.constructDoorKnob(cbNEW, en_c.x, en_c.y);
+                        break;
+                    case 3:
+                        director.constructGhost(cbNEW, en_c.x, en_c.y);
+                        break;
+                }
+                Lcb.Add(cbNEW);
+            }
             CreatedMap.ShowMap();
             //Задание кодировки (надо ли сейчас, хз)
             Console.OutputEncoding = Encoding.Unicode;
             RefreshFrame(ref Lcb);
-            //CreatedMap.testMap[cbP.getX(), cbP.getY()] = cbP.getIcon();
-            //CreatedMap.testMap[cbS.getX(), cbS.getY()] = cbS.getIcon();
-            //CreatedMap.testMap[cbL.getX(), cbL.getY()] = cbL.getIcon();
-            //CreatedMap.testMap[cbK.getX(), cbK.getY()] = cbK.getIcon();
-            //ConsoleKeyInfo keyInfo;
 
             context = new Context();
            
@@ -74,6 +82,10 @@ namespace ConsoleApp1.src.map
         //Тут с каждым шагом выполняется та или иная стратегия (они не особо отличаются)
         public static void stepGame(string keyInfo)
         {
+            //Удаление всех существ с хп ниже 1
+            Lcb.RemoveAll(c => c.getHP() < 1);
+            //RefreshFrame(ref Lcb);
+
             if (context == null)
                 return;
             switch (keyInfo)
@@ -116,7 +128,7 @@ namespace ConsoleApp1.src.map
         {
             context = null;
             Lcb = null;
-            VisualCharacters.mapview = new List<string>();
+            VisualCharacters.mapview = new List<string> { };
         }
     }
 }

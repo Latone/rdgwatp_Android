@@ -15,7 +15,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.Strategies
             {
                 //Нахождене игрока, изменение его координаты (Далее в коде будет FirstOrDefault по Lcb или ElementAt(0))
                 if ((cb.getType() == creatures.types.Type.PLAYER || Lcbs.Count == 1) &&
-                    cb.getY() + 1 < CreatedMap.Mheight && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX(), cb.getY() + 1]))//CreatedMap.testMap[cb.getX(),cb.getY()] !='b' - изменится с рандомизацией карты
+                    cb.getY() + 1 < CreatedMap.testMap.GetLength(1) && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX(), cb.getY() + 1]))//CreatedMap.testMap[cb.getX(),cb.getY()] !='b' - изменится с рандомизацией карты
                 {
                     cb.RememberLastCoordinates();
                     cb.setY((byte)(cb.getY() + 1));
