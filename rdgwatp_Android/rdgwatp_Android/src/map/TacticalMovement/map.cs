@@ -11,10 +11,9 @@ using ConsoleApp1.src.map.TacticalMovement.Strategies;
 using rdgwatp_Android;
 using rdgwatp_Android.src.map.MapGenerator;
 using System.Threading.Tasks;
-
+using rdgwatp_Android.src.map.Log;
 namespace ConsoleApp1.src.map
 {
-
     class map
     {
         private static Context context;
@@ -22,6 +21,8 @@ namespace ConsoleApp1.src.map
         //Обновление фрейма с каждым шагом 
         private static void RefreshFrame(ref List<CreatureBuilder> Lcb)
         {
+            //Обновление перспективы игрока
+            CreatedMap.updatePPmap();
             foreach (CreatureBuilder cb in Lcb)
             {
                 //Обновление местонахождения каждого из существ
@@ -129,6 +130,7 @@ namespace ConsoleApp1.src.map
             context = null;
             Lcb = null;
             VisualCharacters.mapview = new List<string> { };
+            VisualCharacters.PlayerPerspectiveMV = new List<string> { };
         }
     }
 }

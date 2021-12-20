@@ -13,8 +13,7 @@
             RowDefinitions = "1*,60,60,60,60" 
             ColumnDefinitions = "120,160,20,80,80">
 
-            <Label Grid.Row="0" Grid.Column ="2" Grid.ColumnSpan ="3" Text="Active Effects" VerticalOptions="Start"/>
-               
+             
             <Button Grid.Row="2" Grid.Column ="5"  Grid.RowSpan ="1" Text="Attack" Clicked="AttackButton_Clicked" VerticalOptions="Start"/>
             <Button Grid.Row="3" Grid.Column ="5"  Grid.RowSpan ="1" Text="Inventory" Clicked="InventoryButton_Clicked" VerticalOptions="Start"/>
             <Button Grid.Row="4" Grid.Column ="5"  Grid.RowSpan ="1" Text="Escape" Clicked="EscapeButton_Clicked" VerticalOptions="Start"/>
@@ -22,9 +21,9 @@
             <Label Grid.Row="1"
                    Grid.RowSpan ="5"
                    Grid.Column ="0"
-                   Grid.ColumnSpan="3"
+                   Grid.ColumnSpan="5"
                    Text="{Binding EmotionsView}"
-                   FontSize="9"
+                   FontSize="12"
                    MaxLines="80" LineBreakMode="TailTruncation"
                    LineHeight="0.85"
                    CharacterSpacing="0"
@@ -71,35 +70,53 @@
                          Grid.Column="5"
                          Grid.ColumnSpan="1"
                    Text="Hero HP"
-                   HorizontalTextAlignment="End"/>
+                   HorizontalTextAlignment="End"
+                   Padding="0,0,10,0"/>
             <Label Grid.Row="0"
                          Grid.Column="5"
                          Grid.ColumnSpan="1"
                    Text="{Binding h_Vnumhp}"
-                   HorizontalTextAlignment="Start"/>
+                   HorizontalTextAlignment="Start"
+                   Padding="10,0,0,0"/>
             <ProgressBar Grid.Row="0"
                          Grid.Column="5"
                          Grid.ColumnSpan="1"
                          Progress="{Binding h_pbar}"
                          ProgressColor="LawnGreen"
-                         ScaleY="3"/>
+                         ScaleY="3"
+                         ScaleX="0.9"/>
             <Label Grid.Row="1"
                          Grid.Column="5"
                          Grid.ColumnSpan="1"
                    Text="Hero Armour"
                    HorizontalTextAlignment="End"
-                   VerticalTextAlignment="Start"/>
+                   VerticalTextAlignment="Start"
+                   Padding="0,5,10,0"/>
             <Label Grid.Row="1"
                          Grid.Column="5"
                          Grid.ColumnSpan="1"
                    Text="{Binding h_Vnumarmor}"
-                   HorizontalTextAlignment="Start"/>
+                   HorizontalTextAlignment="Start"
+                   Padding="10,5,0,0"/>
             <ProgressBar Grid.Row="1"
                          Grid.Column="5"
                          Grid.ColumnSpan="1"
                          Progress="{Binding h_armorbar}"
                          ProgressColor="Blue"
-                         ScaleY="3"/>
+                         ScaleY="3"
+                         ScaleX="0.9"/>
+            <ScrollView VerticalOptions="FillAndExpand"
+                            HorizontalOptions="Start"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Grid.RowSpan ="2"
+                        Grid.ColumnSpan ="2"
+                        BackgroundColor="Azure"
+                        >
+                <StackLayout>
+                    <Label Text="{Binding Log}"/>
+                </StackLayout>
+            </ScrollView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

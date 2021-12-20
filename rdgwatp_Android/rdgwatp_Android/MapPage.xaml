@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="rdgwatp_Android.MapPage"
              NavigationPage.HasNavigationBar="False"
+             x:Name="MapPageXAML"
              >
     <ContentPage.Content>
         <Grid 
@@ -36,7 +37,19 @@
                    HorizontalOptions="Start"
                    FontFamily="serif"
                    VerticalOptions="Center"
-                   FontSize="10"/>
+                   FontSize="22"/>
+            <ScrollView VerticalOptions="FillAndExpand"
+                            HorizontalOptions="Start"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Grid.RowSpan ="2"
+                        Grid.ColumnSpan ="3"
+                        BackgroundColor="Azure"
+                        >
+                <StackLayout>
+                    <Label Text="{Binding Log}"/>
+                </StackLayout>
+            </ScrollView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

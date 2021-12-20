@@ -14,8 +14,17 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
         public static void WriteAt(char s, int x, int y)
         {
             char [] h = VisualCharacters.mapview[y].ToCharArray();
+            char[] k = { };
+            if (Math.Abs(y - map.getPlayer().getY()) < VisualCharacters.playerVisionRange)
+            {
+                k = VisualCharacters.PlayerPerspectiveMV[y - map.getPlayer().getY() + VisualCharacters.playerVisionRange].ToCharArray();
+                if(Math.Abs(map.getPlayer().getX() - x) < VisualCharacters.playerVisionRange)
+                    k[x-map.getPlayer().getX() + VisualCharacters.playerVisionRange] = s;
+                VisualCharacters.PlayerPerspectiveMV[y - map.getPlayer().getY() + VisualCharacters.playerVisionRange] = new string(k);
+            }
             h[x] = s;
             VisualCharacters.mapview[y] = new string(h);
+           
         }
         //RewriteTwoCases - переписывание прошлой и предыдущей ячейки в инвентаре
         public static void RewriteTwoCases(int xOldCase, int yOldCase

@@ -8,6 +8,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
     public static class VisualCharacters
     {
         public static List<string> mapview = new List<string>();
+        public static List<string> PlayerPerspectiveMV = new List<string>();
         public static List<string> inventoryview = new List<string>();
         public static List<string> itemDescriptionview = new List<string>();
 
@@ -20,5 +21,6 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
         public static char ChosenElementPattern = (char)9632;
         public static char ChosenElementPatternNONchosen = ' ';
         public static byte caseSize = (byte)EmptyInventoryCase.GetLongLength(0);
+        public static int playerVisionRange = 5;
     }
 }

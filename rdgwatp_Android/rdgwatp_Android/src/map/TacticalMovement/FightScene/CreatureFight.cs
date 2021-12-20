@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using rdgwatp_Android.src.map.Log;
 
 namespace ConsoleApp1.src.map.TacticalMovement.FightScene
 {
@@ -12,15 +13,22 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
         //RaiseYerHand - бьёт игрок
         public static void RaiseYerHand(ref CreatureBuilder cb, ref CreatureBuilder  cbP)
         {
+            Logger.AddMessage("Your turn");
             short sumDMGP = cbP.getDMG(); 
             Random rand = new Random();
 
             //Шанс на крит игрока, шанс на Evade/Block противника
             if (rand.Next(0, 100) <= cbP.getCh_Crit_Attack())
+            {
                 sumDMGP *= (short)(1 + cbP.getPower_Crit_Attack() / 100);
+                Logger.AddMessage("IT'S CRITICAL!~");
+            }
             if (rand.Next(0, 100) <= cb.getCh_Evade() ||
                 rand.Next(0, 100) <= cb.getCh_Block())
+            {
                 sumDMGP = 0;
+                Logger.AddMessage(String.Format("{0} blocked/evaded your attack", cb.getType()).ToString());
+            }
 
             //Поглощение урона бронёй
             short reminder = sumDMGP;
@@ -30,11 +38,15 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
             if (sumDMGP < 1)
                 sumDMGP = 0;
             if (cb.getARMOR() < 1)
+            {
                 cb.setARMOR(0);
+                Logger.AddMessage("The enemy's armor been shattered");
+            }
 
             cb.setHP((short)(cb.getHP() - sumDMGP));
             cbP.setDMG(cbP.getDefaultDMG());
-
+            if(sumDMGP!=0)
+                Logger.AddMessage(String.Format("You dealt {0} dmg", sumDMGP).ToString());
             //Переписывание шкалы здоровья в момент срабатывания (плохая идея, т.к. там ещё и броня)
             //Console.SetCursorPosition(3, 0);
             //for (int i = 0; i < cb.getHP().ToString().Length; i++)
@@ -44,18 +56,15 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
 
             //Фрейм врага на поглощение удара (Анимация)
             //Console.SetCursorPosition(0, 1);
-            
+
             string temp = cb.getEmotions(1,true)[1];
             
             
             Thread.Sleep(500);
 
             //Если враг откинулся
-            if (cb.getHP() < 1 && cb.getIsDead() == false)
-            {
-                cbP.setIsFighting(false);
-                cbP.setZeroTriggerFighting(false);
-                cb.setIsDead(true);
+            if (cb.getHP() < 1)
+            { 
                 return;
             }
             //Очередь врага
@@ -63,6 +72,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
         }
         public static void EnemyRaisedABiggerOne(ref CreatureBuilder cb, ref CreatureBuilder cbP)
         {
+            Logger.AddMessage("Enemy's turn");
             //Фрейм врага на базовое состояние (Анимация)
             //Console.SetCursorPosition(0, 1);
             string temp = cb.getEmotions(0,true)[0];
@@ -77,10 +87,16 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
             short sumDMGE = cb.getDMG();
             Random rand = new Random();
             if (rand.Next(0, 100) <= cb.getCh_Crit_Attack())
+            {
                 sumDMGE *= (short)(1 + cb.getPower_Crit_Attack() / 100);
+                Logger.AddMessage("IT'S CRITICAL!~");
+            }
             if (rand.Next(0, 100) <= cbP.getCh_Evade() ||
                 rand.Next(0, 100) <= cbP.getCh_Block())
+            {
                 sumDMGE = 0;
+                Logger.AddMessage("You evaded/blocked an attack!");
+            }
 
             //Поглощение урона бронёй
             short reminder = sumDMGE;
@@ -90,10 +106,14 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
             if (sumDMGE < 1)
                 sumDMGE = 0;
             if (cbP.getARMOR() < 1)
+            {
                 cbP.setARMOR(0);
+                Logger.AddMessage("Your armor depleed");
+            }
 
             cbP.setHP((short)(cbP.getHP() - sumDMGE));
-
+            if(sumDMGE!=0)
+                Logger.AddMessage(String.Format("{0} dealt {1} dmg",cb.getType(), sumDMGE).ToString());
             Thread.Sleep(500);
             //Console.SetCursorPosition(3, 16);
             //Переписывание шкалы здоровья в момент срабатывания (плохая идея, т.к. там ещё и броня)

@@ -7,6 +7,7 @@ using System.Text;
 using System.Linq;
 using ConsoleApp1.src.map.TacticalMovement.FightScene;
 using System.Threading;
+using rdgwatp_Android.src.map.Log;
 
 namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
 {
@@ -26,6 +27,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             //DisableTime - заморозка существ 
             if (cb.getDisableTime() > 0)
             {
+               // Logger.AddMessage(String.Format("{0} freezed for {1} turns", cb.getType(),cb.getDisableTime()).ToString());
                 cb.setDisableTime((byte)(cb.getDisableTime() - 1));
                 return;
             }
@@ -34,6 +36,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             if (((Math.Abs(PlayerYcoor - cb.getY()) <= cb.getNoticeRange()) &&
                 (Math.Abs(PlayerXcoor - cb.getX()) <= cb.getNoticeRange()) )&& cb.getNoticeRange()!=0)
             {
+               // Logger.AddMessage(String.Format("{0} is running towards you", cb.getType()).ToString());
                 cb.setChase(true);
                 RunningThreat(cb,cbP, PlayerXcoor, PlayerYcoor);
                 return;
@@ -70,6 +73,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             if (((Math.Abs(PlayerXcoor - cb.getY()) <= cb.getNoticeRange()) &&
                 (Math.Abs(PlayerYcoor - cb.getX()) <= cb.getNoticeRange()))&& cb.getNoticeRange() != 0) 
             {
+                //Logger.AddMessage(String.Format("{0} is running towards you", cb.getType()).ToString());
                 cb.setChase(true);
             }
         }
@@ -86,6 +90,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             //DisableTime - заморозка существ 
             if (cb.getDisableTime() > 0)
             {
+                //Logger.AddMessage(String.Format("{0} freezed for {1} turns", cb.getType(), cb.getDisableTime()).ToString());
                 cb.setDisableTime((byte)(cb.getDisableTime() - 1));
                 return;
             }
@@ -94,6 +99,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             if ((Math.Abs(PlayerYcoor - cb.getY()) >= cb.getVanishRange()) ||
                 (Math.Abs(PlayerXcoor - cb.getX()) >= cb.getVanishRange())) 
             {
+                Logger.AddMessage(String.Format("{0} lost you", cb.getType()).ToString());
                 cb.setChase(false);
                 Move(cb,cbP, PlayerXcoor, PlayerYcoor);
                 return;
@@ -118,6 +124,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                 if (cbP.getZeroTriggerFighting() == false)
                     cbP.setZeroTriggerFighting(true);
 
+                Logger.AddMessage(String.Format("{0} wants to fight~!", cb.getType()).ToString());
                 Thread th = new Thread(x => fight.Start(cb, ref cbP));
                 th.IsBackground = true;
                 threads.Add(th);
@@ -173,6 +180,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
             if ((Math.Abs(PlayerXcoor - cb.getY()) >= cb.getVanishRange()) &&
                 (Math.Abs(PlayerYcoor - cb.getX()) >= cb.getVanishRange()))
             {
+                //Logger.AddMessage(String.Format("{0} lost you", cb.getType()));
                 cb.setChase(false);
             }
             //Если догнал
@@ -183,6 +191,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
                 if (cbP.getZeroTriggerFighting() == false)
                     cbP.setZeroTriggerFighting(true);
 
+                Logger.AddMessage(String.Format("{0} wants to fight~!", cb.getType()));
                 Thread th = new Thread(x => fight.Start(cb, ref cbP));
                 th.IsBackground = true;
                 threads.Add(th);

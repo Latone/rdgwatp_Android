@@ -14,6 +14,7 @@ using ConsoleApp1.src.creatures.builders;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
+using rdgwatp_Android.src.map.Log;
 
 namespace rdgwatp_Android
 {
@@ -32,8 +33,25 @@ namespace rdgwatp_Android
             DownVis = false;
             RightVis = false;
             LeftVis = false;
-
+            Logger.StaticPropertyChanged += OnLogChange;
             BindingContext = this;
+        }
+        private string wholeLog;
+        void OnLogChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "upLog")
+                Log = Logger.getLog().ToString();
+        }
+        public string Log
+        {
+            get {
+
+                return wholeLog;
+            }
+            set{
+                wholeLog = value;
+                OnPropertyChanged(nameof(Log));
+            }
         }
         void updater_OnLabelUpdate(string value)
         {
@@ -42,12 +60,13 @@ namespace rdgwatp_Android
         //Вперёд-Назад обращение к Label/Text для отображения карты
         public string MapView
         {
-            get { 
-                string result="";
-                for (int i = 0; i < VisualCharacters.mapview.Count; i++)
-                {
-                    result += VisualCharacters.mapview[i];
-                }
+            get {
+                string result = "";
+
+                for (int i = 0; i < VisualCharacters.PlayerPerspectiveMV.Count;i++)//VisualCharacters.mapview.Count; i++)
+                        result += VisualCharacters.PlayerPerspectiveMV[i];
+                    result += "\n";
+                
                 return result;
             }
             set {

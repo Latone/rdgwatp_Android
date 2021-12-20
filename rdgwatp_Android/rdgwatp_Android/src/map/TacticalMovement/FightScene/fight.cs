@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using rdgwatp_Android.src.map.Log;
 
 namespace ConsoleApp1.src.map.TacticalMovement.FightScene
 {
@@ -49,12 +50,18 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
                     return;
             }
             //Переброс предметов из карманов противника в грязные карманцы хобиттса
-            if (cb.getHP() < 1)
+            if (cb.getHP() < 1 && cb.getIsDead() == false)
             {
+                cb.setIsDead(true);
+                cbP.setIsFighting(false);
+                cbP.setZeroTriggerFighting(false);
+                
                 foreach (ItemType it in cb.getInventory())
                 {
                     cbP.getInventory().Add(it);
+                    Logger.AddMessage(("{0} added to your inventory", it.name).ToString());
                 }
+                Logger.AddMessage(("{0} been killed", cb.getType()).ToString());
                 //cb = null;
                 cbP.setIsFighting(false);
                 cbP.setZeroTriggerFighting(false);

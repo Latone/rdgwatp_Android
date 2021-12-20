@@ -13,6 +13,7 @@ using ConsoleApp1.src.map;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ConsoleApp1.src.map.TacticalMovement.LocalVars;
+using rdgwatp_Android.src.map.Log;
 
 namespace rdgwatp_Android
 {
@@ -143,6 +144,26 @@ namespace rdgwatp_Android
                 OnPropertyChanged(nameof(h_armorbar));
             }
         }
+        //log
+        private string wholeLog;
+        void OnLogChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "upLog")
+                Log = Logger.getLog().ToString();
+        }
+        public string Log
+        {
+            get
+            {
+
+                return wholeLog;
+            }
+            set
+            {
+                wholeLog = value;
+                OnPropertyChanged(nameof(Log));
+            }
+        }
         public FightPage()
         {
             Title = "Fight Page";
@@ -160,6 +181,7 @@ namespace rdgwatp_Android
 
             cb.PropertyChanged += _OnCBPropertyChanged;
             cb.PropertyChanged += OnCBPropertyChangedHP;
+            Logger.StaticPropertyChanged += OnLogChange;
             EmotionsView = cb.getEmotions(0, true)[0];
             updateBars();
 
