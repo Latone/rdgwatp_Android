@@ -12,12 +12,15 @@ using rdgwatp_Android;
 using rdgwatp_Android.src.map.MapGenerator;
 using System.Threading.Tasks;
 using rdgwatp_Android.src.map.Log;
+using System.Timers;
+
 namespace ConsoleApp1.src.map
 {
     class map
     {
         private static Context context;
         private static List<CreatureBuilder> Lcb;
+        private static Timer myTimer;
         //Обновление фрейма с каждым шагом 
         private static void RefreshFrame(ref List<CreatureBuilder> Lcb)
         {
@@ -34,6 +37,15 @@ namespace ConsoleApp1.src.map
         }
         public static void StartMap()
         {
+                //Создание таймера на обновления лога
+                myTimer = new System.Timers.Timer();
+                //подписка таймера
+                myTimer.Elapsed += new ElapsedEventHandler(clearLogger);
+                //Интервал
+                myTimer.Interval = 10000;
+                //апуск      
+                myTimer.Enabled = true;
+
             Drunkard.Initialize(); // Создаём рандомную мапу
             short PcoorX = (short)Drunkard.RstartPointX, //Тестовые координаты для игрока
                  PcoorY = (short)Drunkard.RstartPointY;
@@ -128,9 +140,14 @@ namespace ConsoleApp1.src.map
         public static void Clear() //Очистка при выходе из окна
         {
             context = null;
+            myTimer.Close();
             Lcb = null;
             VisualCharacters.mapview = new List<string> { };
             VisualCharacters.PlayerPerspectiveMV = new List<string> { };
+        }
+        private static void clearLogger(object source, ElapsedEventArgs e) 
+        {
+            Logger.dropRecreate();
         }
     }
 }

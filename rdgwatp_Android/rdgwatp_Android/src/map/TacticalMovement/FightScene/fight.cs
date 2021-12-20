@@ -59,9 +59,9 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
                 foreach (ItemType it in cb.getInventory())
                 {
                     cbP.getInventory().Add(it);
-                    Logger.AddMessage(("{0} added to your inventory", it.name).ToString());
+                    Logger.AddMessage(String.Format("{0} added to your inventory", it.name).ToString());
                 }
-                Logger.AddMessage(("{0} been killed", cb.getType()).ToString());
+                Logger.AddMessage(String.Format("{0} been killed", cb.getType()).ToString());
                 //cb = null;
                 cbP.setIsFighting(false);
                 cbP.setZeroTriggerFighting(false);
