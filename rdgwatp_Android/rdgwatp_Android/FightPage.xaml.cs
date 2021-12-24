@@ -169,14 +169,22 @@ namespace rdgwatp_Android
             Title = "Fight Page";
             InitializeComponent();
             //Ждём инициализации существа в классе fight посторонним потоком
-            var t = Task.Run(async delegate
+            //var t = Task.Run(async delegate
+            //{
+            do
             {
-                while (fight.cb == null)
+                if (fight.dirtyThreadCount > 0)
                 {
-                    Console.WriteLine("Waiting for an alternative thread to set value...");
-                    await Task.Delay(25);
+                    fight.waitHandler.Set();
+                    fight.dirtyThreadCount--;
+                    Thread.Sleep(100);
+                    break;
                 }
-            });
+                Console.WriteLine("Waiting for an alternative thread to set value...");
+                //await Task.Delay(25);
+                Thread.Sleep(25);
+            } while (true);
+           // });
             cb = fight.cb;
 
             cb.PropertyChanged += _OnCBPropertyChanged;
@@ -212,7 +220,7 @@ namespace rdgwatp_Android
             {
                 Thread th = new Thread(x => fight.stepFight("ATTACK_MOVE"));//Атака
                 EnemyMoves.threads.Add(th);
-                th.IsBackground = true;
+                //th.IsBackground = true;
                 th.Start();
             }
             //EmotionsView = ""; //Обновление эмоций
@@ -239,6 +247,7 @@ namespace rdgwatp_Android
         async void EscapeButton_Clicked(object sender, EventArgs e)
         {
             Thread th = new Thread(x => fight.stepFight("RUN_AWAY"));//Бег
+            EnemyMoves.threads.Add(th);
             th.Start();
             Thread.Sleep(200);
             if(fight.cb.getDisableTime() > 0)
@@ -248,10 +257,13 @@ namespace rdgwatp_Android
         void OnCBPropertyChangedHP(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "got less than 1 hp") 
-               Device.BeginInvokeOnMainThread(() => {
+               Device.BeginInvokeOnMainThread(async () => {
                    foreach (var thread in EnemyMoves.threads)
+                   {
                        thread.Join();
-                   Navigation.PopAsync(); 
+                   }
+                   EnemyMoves.threads.Clear();
+                   await Navigation.PopAsync(); 
                });
         }
     }

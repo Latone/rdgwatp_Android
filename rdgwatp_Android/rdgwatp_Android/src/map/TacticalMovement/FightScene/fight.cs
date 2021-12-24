@@ -16,7 +16,8 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
     //Сам бой
     public static class fight
     {
-        public static AutoResetEvent waitHandler = new AutoResetEvent(true);
+        public static int dirtyThreadCount = 0;
+        public static AutoResetEvent waitHandler = new AutoResetEvent(false);
         public static CreatureBuilder cb;
         public static CreatureBuilder cbP;
         public static void stepFight(string Act)
@@ -47,6 +48,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
                     cbP.setIsFighting(false);
                     cbP.setZeroTriggerFighting(false);
                     waitHandler.Set();
+                    //cb = null;
                     return;
             }
             //Переброс предметов из карманов противника в грязные карманцы хобиттса
@@ -71,6 +73,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
         }
         public static void Start(CreatureBuilder cbL, ref CreatureBuilder cbPL)
         {
+            dirtyThreadCount++;
             waitHandler.WaitOne();
             cb = cbL;
             cbP = cbPL;

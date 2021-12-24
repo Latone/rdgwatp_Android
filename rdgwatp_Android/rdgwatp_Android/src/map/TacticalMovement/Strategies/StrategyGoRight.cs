@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ConsoleApp1.src.creatures.builders;
 using ConsoleApp1.src.map.TacticalMovement.LocalVars;
+using rdgwatp_Android.src.map.Score;
 
 namespace ConsoleApp1.src.map.TacticalMovement.Strategies
 {
@@ -18,6 +19,14 @@ namespace ConsoleApp1.src.map.TacticalMovement.Strategies
                     cb.getX() + 1 < CreatedMap.testMap.GetLength(0) && VisualCharacters.FloorPattern.Contains(CreatedMap.testMap[cb.getX() + 1, cb.getY()]) &&
                     VisualCharacters.FloorPattern.Contains(VisualCharacters.mapview[cb.getY()].ToCharArray()[cb.getX()+1]))//CreatedMap.testMap[cb.getX(),cb.getY()] !='b' - изменится с рандомизацией карты
                 {
+
+                    if (VisualCharacters.mapview[cb.getY()].ToCharArray()[cb.getX() + 1] == VisualCharacters.FloorPattern[1])
+                    {
+                        Scorer.addToScore(1500);
+                        map.NextLvl();
+                        return;
+                    }
+                    Scorer.addToScore(5);
                     cb.RememberLastCoordinates();
                     cb.setX((byte)(cb.getX() + 1));
                 }

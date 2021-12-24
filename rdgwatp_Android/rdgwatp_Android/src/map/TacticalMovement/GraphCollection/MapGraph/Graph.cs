@@ -13,7 +13,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.MinPath
         //Сам граф adj
         public static List<List<int>> adj;
         //Его "Площадь"
-        public static int v = CreatedMap.testMap.GetLength(0) * CreatedMap.testMap.GetLength(1);
+        public static int v;
         //Сам BFS
         private static bool BFS(int src,
                                  int dest, int v, int[] pred, int[] dist) //сам BFS <*DFS, сорян там другая логика требуется, но ты тоже special*>
@@ -88,6 +88,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.MinPath
         //fillGraph - построение графа (его мосты)
         public static void fillGraph() //Создание графа
         {
+            v = CreatedMap.testMap.GetLength(0) * CreatedMap.testMap.GetLength(1);
             adj = new List<List<int>>(v);
             //Добавление пустой вершины
             for (int i = 0; i < v; i++)

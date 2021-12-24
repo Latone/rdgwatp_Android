@@ -7,8 +7,23 @@ namespace rdgwatp_Android.src.map.MapGenerator
 {
     static class Drunkard
     {
-        public static void Initialize()
+        static Level lvl;
+        public static void Initialize(bool nextLevel)
         {
+            if (lvl == null)
+                lvl = new Level();
+            if (nextLevel)
+            {
+                lvl.incWandH();
+                lvl.setLvlNum(lvl.getLvlNum() + 1);
+                lvl.setNOPTE(lvl.getStandartNOPTE(10));
+            }
+            else
+            {
+                lvl.setLvlNum(1);
+                lvl.setNOPTE(lvl.getStandartNOPTE(0));
+            }
+
             setup();
             walking();
             CreatedMap.testMap = getMap();
@@ -18,7 +33,6 @@ namespace rdgwatp_Android.src.map.MapGenerator
         public  static short RstartPointY { get; set; }
 
         private static short startPointX, startPointY;
-        private static int NumberOfPointsToEmpty;
         public struct coords {public short x, y; }
         public static Stack<coords> Enemy_Cords;
         static void Populate<T>(this T[,] arr, T value)
@@ -33,15 +47,17 @@ namespace rdgwatp_Android.src.map.MapGenerator
         }
         static void setup()
         {
-            map = new char[20, 20];
+            
+            map = new char[lvl.getSSW(), lvl.getSSH()];
             Enemy_Cords = new Stack<coords>();
-            NumberOfPointsToEmpty = 175;
+
             Populate<char>(map, VisualCharacters.WallPattern.FirstOrDefault());
             RstartPointX = (short)Randomizator.GenerateRandomNumber(map.GetLength(0));
             RstartPointY = (short)Randomizator.GenerateRandomNumber(map.GetLength(1));
             startPointX = RstartPointX;
             startPointY = RstartPointY;
             map[RstartPointX, RstartPointY] = VisualCharacters.FloorPattern.FirstOrDefault();
+            
         }
         public static char[,] getMap()
         {
@@ -49,7 +65,7 @@ namespace rdgwatp_Android.src.map.MapGenerator
         }
         static void walking()
         {
-            while (NumberOfPointsToEmpty > 0)
+            while (lvl.getNOPTE() > 0)
             {
                 switch (Randomizator.GenerateRandomNumber(4))
                 {
@@ -57,7 +73,10 @@ namespace rdgwatp_Android.src.map.MapGenerator
                     case 0:
                         if (startPointX - 1 > 0 && map[startPointX - 1, startPointY] == VisualCharacters.WallPattern.FirstOrDefault())
                         {
-                            map[startPointX - 1, startPointY] = VisualCharacters.FloorPattern.FirstOrDefault();
+                            if (lvl.getNOPTE() == 1)
+                                map[startPointX - 1, startPointY] = VisualCharacters.FloorPattern[1];
+                            else
+                                map[startPointX - 1, startPointY] = VisualCharacters.FloorPattern.FirstOrDefault();
                             startPointX--;
                             if (Randomizator.GenerateRandomNumber(1000) > 950)
                                 Enemy_Cords.Push(new coords { x=startPointX, y=startPointY });
@@ -69,8 +88,11 @@ namespace rdgwatp_Android.src.map.MapGenerator
                     //up
                     case 1:
                         if (startPointY - 1 > 0 && map[startPointX, startPointY-1] == VisualCharacters.WallPattern.FirstOrDefault())
-                        { 
-                            map[startPointX, startPointY - 1] = VisualCharacters.FloorPattern.FirstOrDefault();
+                        {
+                            if (lvl.getNOPTE() == 1)
+                                map[startPointX, startPointY - 1] = VisualCharacters.FloorPattern[1];
+                            else
+                                map[startPointX, startPointY - 1] = VisualCharacters.FloorPattern.FirstOrDefault();
                             startPointY--;
                             if (Randomizator.GenerateRandomNumber(1000) < 70)
                                 Enemy_Cords.Push(new coords { x = startPointX, y = startPointY });
@@ -82,7 +104,10 @@ namespace rdgwatp_Android.src.map.MapGenerator
                     case 2:
                         if (startPointX + 1 < map.GetLength(0) && map[startPointX + 1, startPointY] == VisualCharacters.WallPattern.FirstOrDefault())
                         {
-                            map[startPointX + 1, startPointY] = VisualCharacters.FloorPattern.FirstOrDefault();
+                            if (lvl.getNOPTE() == 1)
+                                map[startPointX + 1, startPointY] = VisualCharacters.FloorPattern[1];
+                            else
+                                map[startPointX + 1, startPointY] = VisualCharacters.FloorPattern.FirstOrDefault();
                             startPointX++;
                             if (Randomizator.GenerateRandomNumber(1000) > 950)
                                 Enemy_Cords.Push(new coords { x = startPointX, y = startPointY });
@@ -93,8 +118,11 @@ namespace rdgwatp_Android.src.map.MapGenerator
                     //down
                     case 3:
                         if (startPointY + 1 < map.GetLength(1) && map[startPointX, startPointY + 1] == VisualCharacters.WallPattern.FirstOrDefault())
-                        { 
-                            map[startPointX, startPointY + 1] = VisualCharacters.FloorPattern.FirstOrDefault();
+                        {
+                            if (lvl.getNOPTE() == 1)
+                                map[startPointX, startPointY + 1] = VisualCharacters.FloorPattern[1];
+                            else
+                                map[startPointX, startPointY + 1] = VisualCharacters.FloorPattern.FirstOrDefault();
                             startPointY++;
                             if (Randomizator.GenerateRandomNumber(1000) < 70)
                                 Enemy_Cords.Push(new coords { x = startPointX, y = startPointY });
@@ -130,10 +158,10 @@ namespace rdgwatp_Android.src.map.MapGenerator
                                         startPointY++;
                                 break;
                         }
-                        NumberOfPointsToEmpty++;
+                        lvl.setNOPTE(lvl.getNOPTE()+1);
                         break;
                 }
-                NumberOfPointsToEmpty--;
+                lvl.setNOPTE(lvl.getNOPTE() - 1);
             }
         }
         

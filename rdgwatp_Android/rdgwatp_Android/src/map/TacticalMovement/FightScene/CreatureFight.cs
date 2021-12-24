@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using rdgwatp_Android.src.map.Log;
+using ConsoleApp1.src.map.TacticalMovement.LocalVars;
+using rdgwatp_Android.src.map.Score;
 
 namespace ConsoleApp1.src.map.TacticalMovement.FightScene
 {
     class CreatureFight
     {
+        private static readonly object syncObj = new object();
         //RaiseYerHand - бьёт игрок
         public static void RaiseYerHand(ref CreatureBuilder cb, ref CreatureBuilder  cbP)
         {
@@ -63,9 +66,20 @@ namespace ConsoleApp1.src.map.TacticalMovement.FightScene
             Thread.Sleep(500);
 
             //Если враг откинулся
-            if (cb.getHP() < 1)
-            { 
-                return;
+            //Ток 1 тред может здесь быть - lock
+            lock (syncObj)
+            {
+                if (cb.getHP() < 1)
+                {
+                    foreach (var thread in EnemyMoves.threads)
+                    {
+                        if (thread.ManagedThreadId == Thread.CurrentThread.ManagedThreadId)
+                            continue;
+                        thread.Abort();
+                    }
+                    Scorer.addToScore(250);
+                    return;
+                }
             }
             //Очередь врага
             EnemyRaisedABiggerOne(ref cb, ref cbP);

@@ -35,32 +35,39 @@ namespace ConsoleApp1.src.map
             //Обновление карты на странице MapPage.xaml
             FastForwardChangeXMLObjects.Process("");
         }
-        public static void StartMap()
+        public static void StartMap(bool nextLvl)
         {
                 //Создание таймера на обновления лога
                 myTimer = new System.Timers.Timer();
                 //подписка таймера
                 myTimer.Elapsed += new ElapsedEventHandler(clearLogger);
                 //Интервал
-                myTimer.Interval = 10000;
+                myTimer.Interval = 3000;
                 //апуск      
                 myTimer.Enabled = true;
 
-            Drunkard.Initialize(); // Создаём рандомную мапу
+            Drunkard.Initialize(nextLvl); // Создаём рандомную мапу
             short PcoorX = (short)Drunkard.RstartPointX, //Тестовые координаты для игрока
                  PcoorY = (short)Drunkard.RstartPointY;
 
             // CreatedMap.fillMap();
             CreatedMap.CreateGraph(); // Создание графа для карты, по нему перемещаются существа
-            //Список существ
-            Lcb = new List<CreatureBuilder>();
-            //Создание отдельной оболочки для игрока
-            CreatureBuilder cbP = new CreatureBuilder();
+            
             Director director = new Director();
-
-            //Заполнение оболочки игрока
-            director.constructPlayer(cbP, PcoorX, PcoorY);
-            Lcb.Add(cbP);
+            if (nextLvl == false)
+            {
+                //Список существ
+                Lcb = new List<CreatureBuilder>();
+                //Создание отдельной оболочки для игрока
+                CreatureBuilder cbP = new CreatureBuilder();
+                //Заполнение оболочки игрока
+                director.constructPlayer(cbP, PcoorX, PcoorY);
+                Lcb.Add(cbP);
+            }
+            else {
+                Lcb[0].setX(PcoorX);
+                Lcb[0].setY(PcoorY);
+            }
             //Создание/Заполнение оболочек для существ
             while (Drunkard.Enemy_Cords.Count > 0)
             {
@@ -97,6 +104,8 @@ namespace ConsoleApp1.src.map
         {
             //Удаление всех существ с хп ниже 1
             Lcb.RemoveAll(c => c.getHP() < 1);
+            RefreshFrame(ref Lcb);
+            
             //RefreshFrame(ref Lcb);
 
             if (context == null)
@@ -137,10 +146,21 @@ namespace ConsoleApp1.src.map
         {
             return Lcb[0];
         }
+        public static void NextLvl()
+        {
+            if (Lcb.Count > 1)
+                Lcb.RemoveRange(1, Lcb.Count - 1);
+
+            myTimer.Close();
+            VisualCharacters.mapview = new List<string> { };
+            VisualCharacters.PlayerPerspectiveMV = new List<string> { };
+            StartMap(true);
+        }
         public static void Clear() //Очистка при выходе из окна
         {
             context = null;
-            myTimer.Close();
+            if(myTimer!=null)
+                myTimer.Close();
             Lcb = null;
             VisualCharacters.mapview = new List<string> { };
             VisualCharacters.PlayerPerspectiveMV = new List<string> { };

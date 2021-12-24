@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
 using rdgwatp_Android.src.map.Log;
+using rdgwatp_Android.src.map.Score;
 
 namespace rdgwatp_Android
 {
@@ -27,7 +28,8 @@ namespace rdgwatp_Android
             InitializeComponent();
 
             FastForwardChangeXMLObjects.OnLabelUpdate += new FastForwardChangeXMLObjects.UpdateLabel(updater_OnLabelUpdate);
-            
+            Scorer.StaticPropertyChanged += OnScoreChange;
+
             InventoryVis = false;
             UpVis = false;
             DownVis = false;
@@ -35,6 +37,22 @@ namespace rdgwatp_Android
             LeftVis = false;
             Logger.StaticPropertyChanged += OnLogChange;
             BindingContext = this;
+        }
+        void OnScoreChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ScoreUpdate")
+                Score = "Score: " + Scorer.getFullScore().ToString();
+        }
+        private string vScore;
+        public string Score
+        {
+            get {
+                return vScore;
+            }
+            set {
+                vScore = value;
+                OnPropertyChanged(nameof(Score));
+            }
         }
         private string wholeLog;
         void OnLogChange(object sender, PropertyChangedEventArgs e)
@@ -131,7 +149,7 @@ namespace rdgwatp_Android
         //Загрузка карты
         void StartButton_Clicked(object sender, EventArgs e)
         {
-            map.StartMap();
+            map.StartMap(false);
 
             //Подписка игрока на изменение состояния его isFighting-переменной
             cb = map.getPlayer();

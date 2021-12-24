@@ -126,7 +126,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
 
                 Logger.AddMessage(String.Format("{0} wants to fight~!", cb.getType()).ToString());
                 Thread th = new Thread(x => fight.Start(cb, ref cbP));
-                th.IsBackground = true;
+                //th.IsBackground = true;
                 threads.Add(th);
                 th.Start();
 
@@ -193,7 +193,7 @@ namespace ConsoleApp1.src.map.TacticalMovement.LocalVars
 
                 Logger.AddMessage(String.Format("{0} wants to fight~!", cb.getType()));
                 Thread th = new Thread(x => fight.Start(cb, ref cbP));
-                th.IsBackground = true;
+                //th.IsBackground = true;
                 threads.Add(th);
                 th.Start();
             }    

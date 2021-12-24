@@ -12,7 +12,7 @@ namespace ConsoleApp1
         public static void Main(string[] args)
         {
             map map = new map(); //От загрузки мапы всё остальное идёт
-            map.StartMap();
+            map.StartMap(false);
         }
 
     }
