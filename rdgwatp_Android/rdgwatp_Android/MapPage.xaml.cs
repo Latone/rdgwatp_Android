@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Threading;
 using rdgwatp_Android.src.map.Log;
 using rdgwatp_Android.src.map.Score;
+using rdgwatp_Android.src.map.MapGenerator;
 
 namespace rdgwatp_Android
 {
@@ -29,19 +30,40 @@ namespace rdgwatp_Android
 
             FastForwardChangeXMLObjects.OnLabelUpdate += new FastForwardChangeXMLObjects.UpdateLabel(updater_OnLabelUpdate);
             Scorer.StaticPropertyChanged += OnScoreChange;
+            Logger.StaticPropertyChanged += OnLogChange;
+            Drunkard.StaticPropertyChanged += OnLvlChange;
 
             InventoryVis = false;
             UpVis = false;
             DownVis = false;
             RightVis = false;
             LeftVis = false;
-            Logger.StaticPropertyChanged += OnLogChange;
+            
+            
             BindingContext = this;
         }
         void OnScoreChange(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ScoreUpdate")
                 Score = "Score: " + Scorer.getFullScore().ToString();
+        }
+        void OnLvlChange(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "nextlevel")
+                LvlNum = "Level: " + Drunkard.lvl.getLvlNum().ToString();
+        }
+        private string vLvlNum;
+        public string LvlNum
+        {
+            get
+            {
+                return vLvlNum;
+            }
+            set
+            {
+                vLvlNum = value;
+                OnPropertyChanged(nameof(LvlNum));
+            }
         }
         private string vScore;
         public string Score
@@ -162,6 +184,9 @@ namespace rdgwatp_Android
             DownVis = true;
             RightVis = true;
             LeftVis = true;
+            Score = "Score: 0";
+            Log = "Start";
+            LvlNum = "Level: 1";
         }
         
         void UPButton_Clicked(object sender, EventArgs e)

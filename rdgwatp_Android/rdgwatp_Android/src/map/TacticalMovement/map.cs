@@ -13,6 +13,8 @@ using rdgwatp_Android.src.map.MapGenerator;
 using System.Threading.Tasks;
 using rdgwatp_Android.src.map.Log;
 using System.Timers;
+using rdgwatp_Android.src.map.Score;
+using ConsoleApp1.src.map.TacticalMovement.FightScene;
 
 namespace ConsoleApp1.src.map
 {
@@ -103,9 +105,9 @@ namespace ConsoleApp1.src.map
         public static void stepGame(string keyInfo)
         {
             //Удаление всех существ с хп ниже 1
-            Lcb.RemoveAll(c => c.getHP() < 1);
-            RefreshFrame(ref Lcb);
             
+            RefreshFrame(ref Lcb);
+            Lcb.RemoveAll(c => c.getHP() < 1);
             //RefreshFrame(ref Lcb);
 
             if (context == null)
@@ -158,6 +160,8 @@ namespace ConsoleApp1.src.map
         }
         public static void Clear() //Очистка при выходе из окна
         {
+            fight.dirtyThreadCount = 0;
+            Scorer.dropScore();
             context = null;
             if(myTimer!=null)
                 myTimer.Close();

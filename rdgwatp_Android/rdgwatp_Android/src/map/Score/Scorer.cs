@@ -19,6 +19,10 @@ namespace rdgwatp_Android.src.map.Score
             FullScore += val;
             NotifyStaticPropertyChanged("ScoreUpdate");
         }
+        public static void dropScore()
+        {
+            FullScore = 0;
+        } 
         static public int getFullScore()
         {
             return FullScore;

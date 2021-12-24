@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using ConsoleApp1.src.map.TacticalMovement.LocalVars;
 namespace rdgwatp_Android.src.map.MapGenerator
 {
     static class Drunkard
     {
-        static Level lvl;
+        static void NotifyStaticPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
+        }
+        public static event PropertyChangedEventHandler StaticPropertyChanged; //Можно подписываться на него
+
+        public static Level lvl;
         public static void Initialize(bool nextLevel)
         {
             if (lvl == null)
@@ -17,6 +25,7 @@ namespace rdgwatp_Android.src.map.MapGenerator
                 lvl.incWandH();
                 lvl.setLvlNum(lvl.getLvlNum() + 1);
                 lvl.setNOPTE(lvl.getStandartNOPTE(10));
+                NotifyStaticPropertyChanged("nextlevel");
             }
             else
             {
